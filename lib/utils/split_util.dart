@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as path;
 
 class SplitUtil {
@@ -48,8 +49,8 @@ class SplitUtil {
             ? contentBytes.length
             : i + chunkSize,
       );
-
-      String chunkFilePath = path.join(output, '$fileName.$fileIndex.js');
+      var hash = geerateHash(chunk);
+      String chunkFilePath = path.join(output, '$fileName.$fileIndex.$hash.js');
       File chunkFile = File(chunkFilePath);
       // 写入拆分后的文件
       // Write to the split files
@@ -59,5 +60,14 @@ class SplitUtil {
     // wait for all futures to complete
     // 等待所有写入完成
     await Future.wait(futures);
+  }
+
+  /// 根据字节生成hash
+  /// Generate hash
+  static String geerateHash(List<int> contentBytes) {
+    Digest hash = sha256.convert(contentBytes);
+    String fullHash = hash.toString();
+    var length = fullHash.length;
+    return fullHash.substring(0, 4) + fullHash.substring(length - 4, length);
   }
 }

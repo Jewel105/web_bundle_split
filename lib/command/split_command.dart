@@ -36,7 +36,5 @@ class SplitCommand extends Command {
 
     // main.dart.js
     SplitUtil.splitMainJs(output, chunkSize);
-
-    print('Splitting file: $output');
   }
 }
