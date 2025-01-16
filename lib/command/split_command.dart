@@ -3,7 +3,6 @@ import 'package:args/command_runner.dart';
 import '../utils/split_util.dart';
 
 // flutter pub run web_bundle_split split
-
 class SplitCommand extends Command {
   @override
   String get description => "Splits a large file into smaller chunks.";
@@ -29,6 +28,7 @@ class SplitCommand extends Command {
   @override
   Future<void> run() async {
     // 解析命令行参数
+    // parse command line arguments
     String? output = argResults?['output'];
     int? chunkSize = argResults?['chunk-size'];
     output ??= './build/web';
