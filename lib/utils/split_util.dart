@@ -15,18 +15,19 @@ class SplitUtil {
     }
 
     // split main.dart.js
-    await splitFile(
+    List<String> files = await splitFile(
       file: mainJsFile,
       chunkSize: chunkSize,
       output: output,
       fileName: 'main.dart',
     );
-    print("completed splitting main.dart.js");
+    print("completed splitting main.dart.js,$files");
+    // TODO: 删除文件, 替换模版
   }
 
   /// 拆分文件
   /// split file
-  static Future<void> splitFile({
+  static Future<List<String>> splitFile({
     required File file,
     required int chunkSize,
     required String output,
@@ -38,6 +39,7 @@ class SplitUtil {
 
     int fileIndex = 1;
     List<Future> futures = [];
+    List<String> files = [];
 
     // Split files according to file size.
     for (int i = 0; i < contentBytes.length; i += chunkSize) {
@@ -49,8 +51,10 @@ class SplitUtil {
             ? contentBytes.length
             : i + chunkSize,
       );
-      var hash = geerateHash(chunk);
-      String chunkFilePath = path.join(output, '$fileName.$fileIndex.$hash.js');
+      String hash = generateHash(chunk);
+      String chunkFileName = '$fileName.$fileIndex.$hash.js';
+      files.add(chunkFileName);
+      String chunkFilePath = path.join(output, chunkFileName);
       File chunkFile = File(chunkFilePath);
       // 写入拆分后的文件
       // Write to the split files
@@ -60,11 +64,13 @@ class SplitUtil {
     // wait for all futures to complete
     // 等待所有写入完成
     await Future.wait(futures);
+
+    return files;
   }
 
   /// 根据字节生成hash
   /// Generate hash
-  static String geerateHash(List<int> contentBytes) {
+  static String generateHash(List<int> contentBytes) {
     Digest hash = sha256.convert(contentBytes);
     String fullHash = hash.toString();
     var length = fullHash.length;
