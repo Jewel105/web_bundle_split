@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:path/path.dart' as path;
+import 'package:web_bundle_split/js/js_template.dart';
 
 class SplitUtil {
   /// 拆分 main.dart.js
@@ -13,7 +15,6 @@ class SplitUtil {
     if (!mainJsFile.existsSync()) {
       throw Exception('main.dart.js not found.');
     }
-
     // split main.dart.js
     List<String> files = await splitFile(
       file: mainJsFile,
@@ -21,8 +22,9 @@ class SplitUtil {
       output: output,
       fileName: 'main.dart',
     );
-    print("completed splitting main.dart.js,$files");
-    // TODO: 删除文件, 替换模版
+    final String jsTemplate =
+        JsTemplate.mainJsTemplate.replaceFirst('[]', jsonEncode(files));
+    mainJsFile.writeAsString(jsTemplate);
   }
 
   /// 拆分文件

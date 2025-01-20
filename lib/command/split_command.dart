@@ -21,7 +21,7 @@ class SplitCommand extends Command {
     argParser.addOption(
       'chunk-size',
       abbr: 's',
-      help: 'Chunk size in bytes, default: 1024 * 500 (500kb) ',
+      help: 'Chunk size in bytes, default: 1024 * 300 (300kb) ',
     );
   }
 
@@ -32,7 +32,7 @@ class SplitCommand extends Command {
     String? output = argResults?['output'];
     int? chunkSize = argResults?['chunk-size'];
     output ??= './build/web';
-    chunkSize ??= 1024 * 500;
+    chunkSize ??= 1024 * 300;
 
     // main.dart.js
     SplitUtil.splitMainJs(output, chunkSize);
