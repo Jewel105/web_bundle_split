@@ -1,39 +1,30 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
-
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+# web_bundle_split
+A Flutter plugin for splitting web bundles.
+## Functionality
+This plugin is mainly used to split web bundles, especially for handling the main.dart.js file. It splits it into several smaller chunks to achieve better resource management and loading performance.
+## Version
+Current version: 0.0.1
+## Installation
+To use this plugin, add the following to your pubspec.yaml file:
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+dependencies:
+  web_bundle_split: ^0.0.1
+```
+Then run:
+```
+flutter pub get
+```
+## Usage
+This plugin is operated through a command-line tool. Use the following command to run the splitting function:
+```
+flutter pub run web_bundle_split split
+```
+### Command Parameters
+- -o or --output: The output path after packing, default is ./build/web.
+- -s or --chunk-size: The size of each file chunk in bytes, default is 1024 * 300 (300kb).
+## Example
+Here is an example of use:
+```
+flutter pub run web_bundle_split split -o./output -s 512000
+```
+The above example splits the main.dart.js file into multiple file chunks, each with a size of 500KB (512000 bytes), and outputs them to the ./output directory.
